@@ -19,20 +19,37 @@ const UserList = () => {
     }
 
     const handleChange = (event) => {
-        // let updateList = [...listUser]
-        // updateList.forEach(function (item) {
-        //     console.log("e", item.name.includes(event.target.value))
-        //     if (!item.name.includes(event.target.value) && !item.Apellido.includes(event.target.value)) {
-        //         item.hide = true
-        //     } else {
-        //         item.hide = false
-        //     }
-        // })
-        // console.log("updateList", updateList)
-        // setListUser(updateList)
+        let updateList = [...listUser]
+        updateList.forEach(function (item) {
+            let value = event.target.value.toLowerCase()
+            if (!item.name.toLowerCase().includes(value) && !item.Apellido.toLowerCase().includes(value) && !item.Telefono.includes(value)) {
+                item.hide = true
+            } else {
+                item.hide = false
+            }
+        })
+        setListUser(updateList)
 
     };
 
+    const selectFilter = (type, order) => {
+        console.log("type", type)
+        console.log("order", order)
+        let updateList = [...listUser]
+
+        updateList.sort(function (a, b) {
+            let x = a[type];
+            let y = b[type];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+
+        if (order === 'desc') {
+            updateList.reverse()
+        }
+
+        setListUser(updateList)
+
+    }
 
     useEffect(() => {
         getUsers()
@@ -53,13 +70,13 @@ const UserList = () => {
                         <Box>
                             <TextField
                                 id="outlined-required"
-                                label="Buscar por nombre o apellido"
+                                label="Buscar (nombre, apellido o teléfono)"
                                 sx={styles.inputSearch}
                                 onChange={handleChange}
                             />
                         </Box>
                         <Box>
-                            <UserTable users={listUser} />
+                            <UserTable users={listUser} selectFilter={selectFilter} />
                         </Box>
                     </Box>
             }
