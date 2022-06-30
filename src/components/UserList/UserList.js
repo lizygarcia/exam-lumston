@@ -33,20 +33,35 @@ const UserList = () => {
     };
 
     const selectFilter = (type, order) => {
-        console.log("type", type)
-        console.log("order", order)
+
         let updateList = [...listUser]
 
-        updateList.sort(function (a, b) {
-            let x = a[type];
-            let y = b[type];
-            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-        });
+        if (type !== 'Estatus') {
+            updateList.sort(function (a, b) {
+                let x = a[type];
+                let y = b[type];
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            });
+
+        } else {
+            updateList.sort(function (a, b) {
+                let x = a[type];
+                let y = b[type];
+                return x - y
+            });
+        }
 
         if (order === 'desc') {
             updateList.reverse()
         }
 
+        setListUser(updateList)
+
+    }
+
+    const updateStatus = (index) => {
+        let updateList = [...listUser]
+        updateList[index].Estatus = Number(!updateList[index].Estatus)
         setListUser(updateList)
 
     }
@@ -76,7 +91,7 @@ const UserList = () => {
                             />
                         </Box>
                         <Box>
-                            <UserTable users={listUser} selectFilter={selectFilter} />
+                            <UserTable users={listUser} selectFilter={selectFilter} updateStatus={updateStatus} />
                         </Box>
                     </Box>
             }

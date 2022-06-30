@@ -10,9 +10,10 @@ import TablePagination from '@mui/material/TablePagination';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import UserTableOptions from './UserTableOptions/UserTableOptions'
+import UserStatusOptions from './UserStatusOptions/UserStatusOptions'
 import styles from './UserTable.styles.js'
 
-const UserTable = ({ users, selectFilter }) => {
+const UserTable = ({ users, selectFilter, updateStatus }) => {
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(0);
@@ -73,12 +74,10 @@ const UserTable = ({ users, selectFilter }) => {
                                 <Box sx={styles.headerOptions}>
                                     <Box>
                                         <Typography variant="body1" color="black">
-                                            Genero
+                                            Género
                                         </Typography>
                                     </Box>
-                                    <Box>
-                                        <UserTableOptions type="Genero" returnOption={selectFilter}></UserTableOptions>
-                                    </Box>
+
                                 </Box>
                             </TableCell>
                             <TableCell>
@@ -89,7 +88,7 @@ const UserTable = ({ users, selectFilter }) => {
                                         </Typography>
                                     </Box>
                                     <Box>
-                                        <UserTableOptions type="Status" returnOption={selectFilter}></UserTableOptions>
+                                        <UserTableOptions type="Estatus" returnOption={selectFilter}></UserTableOptions>
                                     </Box>
                                 </Box>
                             </TableCell>
@@ -99,53 +98,60 @@ const UserTable = ({ users, selectFilter }) => {
                         users && users.length ?
                             <TableBody>
                                 {users
-                                .slice(page*rowsPerPage, page*rowsPerPage + rowsPerPage)
-                                .map((item, index) => (
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((item, index) => (
 
-                                    !item.hide ?
+                                        !item.hide ?
 
-                                        <TableRow key={index}>
-                                            <TableCell>
-                                                <Box>
-                                                    <Typography variant="body2" color="black">
-                                                        {item.name}
-                                                    </Typography>
-                                                </Box>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Box >
-                                                    <Typography variant="body2" color="black">
-                                                        {item.Apellido}
-                                                    </Typography>
-                                                </Box>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Box >
-                                                    <Typography variant="body2" color="black">
-                                                        {item.Telefono}
-                                                    </Typography>
-                                                </Box>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Box >
-                                                    <Typography variant="body2" color="black">
-                                                        {item.Genero}
-                                                    </Typography>
-                                                </Box>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Box>
-                                                    <Typography variant="body2" color="black">
-                                                        {item.Estatus}
-                                                    </Typography>
-                                                </Box>
-                                            </TableCell>
-                                        </TableRow>
+                                            <TableRow key={index}>
+                                                <TableCell>
+                                                    <Box>
+                                                        <Typography variant="body2" color="black">
+                                                            {item.name}
+                                                        </Typography>
+                                                    </Box>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Box >
+                                                        <Typography variant="body2" color="black">
+                                                            {item.Apellido}
+                                                        </Typography>
+                                                    </Box>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Box >
+                                                        <Typography variant="body2" color="black">
+                                                            {item.Telefono}
+                                                        </Typography>
+                                                    </Box>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Box >
+                                                        <Typography variant="body2" color="black">
+                                                            {item.Genero}
+                                                        </Typography>
+                                                    </Box>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Box sx={styles.statusInfo}>
+                                                        <Box sx={styles.typeStatus}>
+                                                            <Typography variant="body2" color="black">
+                                                                {
+                                                                    item.Estatus ? "Habilitado" : "Deshabilitado"
+                                                                }
+                                                            </Typography>
+                                                        </Box>
+                                                        <Box>
+                                                            <UserStatusOptions user={item} index={index} returnOption={updateStatus} />
+                                                        </Box>
+                                                    </Box>
+                                                </TableCell>
+                                            </TableRow>
 
-                                        : []
+                                            : []
 
 
-                                ))}
+                                    ))}
                             </TableBody> : []
                     }
 
