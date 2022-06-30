@@ -18,7 +18,7 @@ const UserTable = ({ users, selectFilter }) => {
     const [page, setPage] = useState(0);
 
 
-    const handleChangePage = (event: unknown, newPage: number) => {
+    const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
 
